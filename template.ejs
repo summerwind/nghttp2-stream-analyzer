@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Nghttp2 Stream Analyzer</title>
+<style>
+body {
+  font-size: 14px;
+  color: #444;
+  font-family: Helvetica, sans-serif;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+h2 {
+  font-size: 15px;
+}
+
+table {
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  font-weight: normal;
+  font-size: 0.9em;
+  background-color: #eee;
+  text-align: left;
+  width: 5em;
+  padding: 4px 8px;
+}
+
+#streams {
+  width: 100%;
+}
+
+#color-sample {
+  margin: 10px 0;
+  border: none;
+  border-collapse: separate;
+  font-size: 12px;
+}
+
+#color-sample th,
+#color-sample td {
+  border: none;
+}
+
+#color-sample td {
+  margin-right: 10px;
+}
+
+#color-sample .color {
+  width: 10px;
+}
+
+#resources table td {
+  padding: 4px 8px;
+}
+
+.section {
+  margin: 0 0 1em;
+}
+</style>
+</head>
+
+<body>
+<h1>Nghttp2 Stream Analyzer</h1>
+
+<div class="section">
+<h2>Timeline</h2>
+<div id="timeline">
+<table id="streams">
+<% streams.forEach(function(stream){ %>
+<tr>
+<th>Stream <%= stream.id %></th>
+<% for (var i=0, len=stream.frames.length; i<len; i++) { -%>
+<% if (stream.frames[i]) { -%>
+<%
+  var frame = stream.frames[i];
+  var bgcolor = "#000";
+  var peer_type = (frame.server) ? "server" : "client";
+  if (colors[peer_type][frame.type]) {
+    bgcolor = colors[peer_type][frame.type];
+  }
+-%>
+<td style="background-color: <%= bgcolor %>;"></td>
+<% } else { -%>
+<td> </td>
+<% } -%>
+<% } %>
+</tr>
+<% }) %>
+</table>
+
+<table id="color-sample">
+<% for (var peer_type in colors) { -%>
+<tr>
+<% for (var frame_type in colors[peer_type]) { -%>
+<td class="color" style="background-color: <%= colors[peer_type][frame_type] %>;"></td>
+<td><%= frame_type %> (<%= peer_type %>)</td>
+<% } -%>
+</tr>
+<% } -%>
+</table>
+</div>
+</div>
+
+<div class="section">
+<h2>Resources</h2>
+<div id="resources">
+<table>
+<% for (var stream_id in resources) { -%>
+<tr>
+<th>Stream <%= stream_id %></th>
+<td><%= resources[stream_id] %></td>
+</tr>
+<% } -%>
+</table>
+</div>
+</div>
+</body>
+</html>

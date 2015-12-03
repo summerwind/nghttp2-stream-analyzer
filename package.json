@@ -1,0 +1,15 @@
+{
+  "name": "nghttp2-stream-analyzer",
+  "version": "0.0.1",
+  "description": "The stream analyzer for nghttp2",
+  "main": "analyzer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Moto Ishizawa",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^2.3.4",
+    "minimist": "^1.2.0"
+  }
+}
